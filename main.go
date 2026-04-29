@@ -24,7 +24,9 @@ from WeChat Channels (微信视频号) by intercepting the video stream URLs.
 
 Usage:
   Start the proxy server, configure your device to use it,
-  then browse WeChat Channels to capture and download videos.`,
+  then browse WeChat Channels to capture and download videos.
+
+Note: For personal use only. Respect content creators and platform ToS.`,
 	SilenceUsage: true,
 }
 
