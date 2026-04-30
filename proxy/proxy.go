@@ -36,7 +36,8 @@ func New(port int) *Proxy {
 		port:   port,
 		server: goproxy.NewProxyHttpServer(),
 	}
-	p.server.Verbose = false
+	// Enable verbose logging to help with debugging captured requests.
+	p.server.Verbose = true
 	p.setupHandlers()
 	return p
 }
@@ -118,39 +119,4 @@ func videoURLPattern() interface{ MatchString(string) bool } {
 	return regexpAny{}
 }
 
-// isVideoURL returns true if the URL looks like a WeChat Channels video resource.
-func isVideoURL(rawURL string) bool {
-	cdnHosts := []string{
-		"finder.video.qq.com",
-		"channels.weixin.qq.com",
-		"vweixinf.tc.qq.com",
-		"vweixin.tc.qq.com",
-	}
-	for _, host := range cdnHosts {
-		if strings.Contains(rawURL, host) {
-			return true
-		}
-	}
-	return false
-}
-
-// extractFileID attempts to pull a meaningful file identifier from the URL.
-func extractFileID(rawURL string) string {
-	parts := strings.Split(rawURL, "/")
-	if len(parts) == 0 {
-		return ""
-	}
-	last := parts[len(parts)-1]
-	// Strip query string
-	if idx := strings.Index(last, "?"); idx != -1 {
-		last = last[:idx]
-	}
-	return last
-}
-
-// regexpAny is a trivial matcher that matches every string (used as a
-// placeholder so goproxy registers the handler for all responses; actual
-// filtering is done in isVideoURL).
-type regexpAny struct{}
-
-func (regexpAny) MatchString(_ string) bool { return true }
+// isVideoURL returns true if the URL looks like a WeChat Channels vi
